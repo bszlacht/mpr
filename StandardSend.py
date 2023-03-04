@@ -1,5 +1,8 @@
 from mpi4py import MPI
 
+# $ chmod +x hello_world.py
+# $ mpiexec -machinefile ./allnodes -np [liczba procesów] ./hello_world.py
+
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 
