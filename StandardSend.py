@@ -4,11 +4,11 @@ import csv
 
 # Initialize MPI
 comm = MPI.COMM_WORLD
-rank = comm.Get_rank
+rank = comm.Get_rank()
 # size = comm.Get_size()
 
-maxSize = 10000
-N = 100
+maxSize = 1000
+N = 10
 
 
 def send(size):
@@ -16,8 +16,8 @@ def send(size):
     start_time = MPI.Wtime()
     for i in range(0, N):
         sendBuf = np.ones(size, dtype=np.uint8)
-        comm.Send(sendBuf, dest=1, tag=123)
-        comm.Recv(sendBuf, source=1, tag=MPI.ANY_TAG)
+        comm.Send(sendBuf, dest=0, tag=123)
+        comm.Recv(sendBuf, source=0, tag=123)
     end_time = (MPI.Wtime() - start_time)/N
     return end_time
 
@@ -26,19 +26,19 @@ def receive(size):
     global N
     for i in range(0, N):
         recvBuf = np.empty(size, dtype=np.uint8)
-        comm.Recv(recvBuf, source=0, tag=MPI.ANY_TAG)
-        comm.Send(recvBuf, dest=0, tag=123)
+        comm.Recv(recvBuf, source=1, tag=123)
+        comm.Send(recvBuf, dest=1, tag=123)
 
 
 def test(p_rank):
     global maxSize
-
     for size in range(1, maxSize, 100):
+        print(size)
         if p_rank == 0:
+            receive(size)
+        else:
             time = send(size)
             print(str(size/time) + " <- B/S | standard send | B ->" + str(size))
-        else:
-            receive(size)
 
 
 test(rank)
