@@ -7,8 +7,8 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 # size = comm.Get_size()
 
-maxSize = 100000
-N = 1000
+maxSize = 300
+N = 1
 
 
 def send(size):
