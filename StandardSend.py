@@ -7,12 +7,14 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 # size = comm.Get_size()
 
-maxSize = 100000
-N = 1000
+maxSize = 1000
+N = 10
 
 
 def send(size):
     global N
+
+    comm.Barrier()
     start_time = MPI.Wtime()
     for i in range(0, N):
         sendBuf = np.ones(size, dtype=np.uint8)
@@ -37,7 +39,8 @@ def test(p_rank):
             receive(size)
         else:
             time = send(size)
-            print(str(size/time) + " <- B/S | standard send | B ->" + str(size))
+            mbsize = size/(10^6)
+            print(str(mbsize/time) + "," + str(size))
 
 
 test(rank)
