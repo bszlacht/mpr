@@ -14,7 +14,6 @@ N = 10
 def send(size):
     global N
 
-    comm.Barrier()
     start_time = MPI.Wtime()
     for i in range(0, N):
         sendBuf = np.ones(size, dtype=np.uint8)
@@ -26,6 +25,7 @@ def send(size):
 
 def receive(size):
     global N
+
     for i in range(0, N):
         recvBuf = np.empty(size, dtype=np.uint8)
         comm.Recv(recvBuf, source=1, tag=123)
@@ -35,6 +35,7 @@ def receive(size):
 def test(p_rank):
     global maxSize
     for size in range(1, maxSize, 100):
+        comm.Barrier()
         if p_rank == 0:
             receive(size)
         else:
