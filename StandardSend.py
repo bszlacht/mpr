@@ -4,11 +4,11 @@ import csv
 
 # Initialize MPI
 comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
+rank = comm.Get_rank
 # size = comm.Get_size()
 
-maxSize = 300
-N = 1
+maxSize = 10000
+N = 100
 
 
 def send(size):
