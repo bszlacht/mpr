@@ -7,7 +7,7 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 # size = comm.Get_size()
 
-maxSize = 10000
+maxSize = 100000
 N = 1000
 
 
