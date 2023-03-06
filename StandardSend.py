@@ -33,7 +33,6 @@ def receive(size):
 def test(p_rank):
     global maxSize
     for size in range(1, maxSize, 100):
-        print(size)
         if p_rank == 0:
             receive(size)
         else:
