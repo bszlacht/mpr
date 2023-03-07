@@ -7,12 +7,11 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 # size = comm.Get_size()
 
-maxSize = 100000
+maxSize = 1000000
+
 N = 1000
 
-buf_size = 100000*2
-buffer = np.empty(buf_size, dtype='b')
-MPI.Attach_buffer(buffer)
+size_array = [1, 10, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 10000, 12000, 16000, 22000, 40000, 60000, 1000000]
 
 
 def send(size):
@@ -20,72 +19,40 @@ def send(size):
 
     start_time = MPI.Wtime()
     for i in range(0, N):
-        # buf_size = size
-        # buffer = np.empty(buf_size, dtype='b')
-        # MPI.Attach_buffer(buffer)
-
-        # sendBuf = np.empty(size, dtype=np.uint8)
-        # comm.Bsend(sendBuf, dest=0, tag=123)
-        # comm.Irecv(sendBuf, source=0, tag=123)
-
-        msg = bytearray(size)
-        comm.Bsend([msg, MPI.CHAR], dest=0, tag=123)
-        msg = comm.Irecv(buffer, source=1, tag=123)
-        msg.Wait()
-
-    end_time = (MPI.Wtime() - start_time)/N
+        sendBuf = np.empty(size, dtype=np.uint8)
+        comm.Bsend(sendBuf, dest=0, tag=123)
+        comm.Recv(sendBuf, source=0, tag=123)
+    end_time = (MPI.Wtime() - start_time) / N
     return end_time
 
 
 def receive(size):
     global N
+
     for i in range(0, N):
-        # buf_size = size
-        # buffer = np.empty(buf_size, dtype=np.uint8)
-        # MPI.Attach_buffer(buffer)
+        recvBuf = np.empty(size, dtype=np.uint8)
+        comm.Recv(recvBuf, source=1, tag=123)
+        comm.Bsend(recvBuf, dest=1, tag=123)
 
-        # recvBuf = np.empty(size, dtype=np.uint8)
-        # comm.Irecv(recvBuf, source=1, tag=123)
-        # comm.Bsend(recvBuf, dest=1, tag=123)
 
-        msg = comm.Irecv(buffer, source=1, tag=123)
-        comm.Bsend([msg, MPI.CHAR], dest=0, tag=123)
+
 
 def test(p_rank):
     global maxSize
-    for size in range(1, maxSize, 100):
+    for size in size_array:
         comm.Barrier()
+
+        buffer = np.empty(maxSize * 4, dtype='b')
+        MPI.Attach_buffer(buffer)
+
         if p_rank == 0:
             receive(size)
         else:
             time = send(size)
-            print(str((size/10^6)/time) + "," + str(size))
+            mbsize = size / (10 ^ 6)
+            print(str(mbsize / time) + "," + str(size))
 
+        MPI.Detach_buffer()
+        del buffer
 
 test(rank)
-
-# # Define the buffer size
-# buf_size = 1024
-#
-# # Allocate memory for the buffer
-# buffer = np.empty(buf_size, dtype='b')
-#
-# # Attach the buffer to the process
-# MPI.Attach_buffer(buffer)
-#
-# if rank == 0:
-#     # Receive the message sent from rank 1
-#     msg = comm.Irecv(buffer, source=1, tag=123)
-#     msg.Wait()
-#     print("Rank 0 received message:", buffer.tobytes())
-# else:
-#     # Prepare a message to be sent
-#     msg = b"Hello from rank " + str(rank).encode()
-#     # Send the message using MPI.Bsend()
-#     comm.Bsend([msg, MPI.CHAR], dest=0, tag=123)
-#
-# # Detach the buffer from the process
-# MPI.Detach_buffer()
-#
-# # Free the memory allocated for the buffer
-# del buffer
