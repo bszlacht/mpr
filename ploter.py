@@ -8,8 +8,7 @@ columns = ["bandwidth", "bsize"]
 # plt.xlabel('size in B')
 # plt.ylabel('bandwidth in MB/s')
 # plt.title('Standard Send 1:2')
-#
-# plt.show()
+
 
 # df = pd.read_csv("std_two_nodes", usecols=columns)
 # plt.plot(df.bsize, df.bandwidth)
@@ -18,15 +17,18 @@ columns = ["bandwidth", "bsize"]
 # plt.title('Standard Send 2:1')
 
 
-df = pd.read_csv("buf_one_node", usecols=columns)
-plt.plot(df.bsize, df.bandwidth)
-plt.xlabel('size in B')
-plt.ylabel('bandwidth in MB/s')
-plt.title('Buffered Send 1:2')
-
-# df = pd.read_csv("buf_two_nodes", usecols=columns)
+# df = pd.read_csv("buf_one_node", usecols=columns)
 # plt.plot(df.bsize, df.bandwidth)
 # plt.xlabel('size in B')
 # plt.ylabel('bandwidth in MB/s')
-# plt.title('Buffered Send 2:1')
+# plt.title('Buffered Send 1:2')
+
+df = pd.read_csv("buf_two_nodes", usecols=columns)
+plt.plot(df.bsize, df.bandwidth)
+plt.xlabel('size in B')
+plt.ylabel('bandwidth in MB/s')
+plt.title('Buffered Send 2:1')
+
 plt.show()
+
+plt.savefig('4.png')
