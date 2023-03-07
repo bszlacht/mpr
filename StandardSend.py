@@ -34,7 +34,7 @@ def receive(size):
 
 def test(p_rank):
     global maxSize
-    for size in range(1, maxSize, 100):
+    for size in range(1, maxSize, 1000):
         comm.Barrier()
         if p_rank == 0:
             receive(size)
