@@ -16,7 +16,7 @@ def send(size):
 
     start_time = MPI.Wtime()
     for i in range(0, N):
-        sendBuf = np.ones(size, dtype=np.uint8)
+        sendBuf = np.empty(size, dtype=np.uint8)
         comm.Send(sendBuf, dest=0, tag=123)
         comm.Recv(sendBuf, source=0, tag=123)
     end_time = (MPI.Wtime() - start_time)/N
