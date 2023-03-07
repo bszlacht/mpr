@@ -10,6 +10,7 @@ rank = comm.Get_rank()
 maxSize = 100000
 N = 1000
 
+size_array = [1, 10, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 10000, 12000, 16000, 22000, 40000, 60000, 1000000]
 
 def send(size):
     global N
@@ -34,7 +35,7 @@ def receive(size):
 
 def test(p_rank):
     global maxSize
-    for size in range(1, maxSize, 1000):
+    for size in size_array:
         comm.Barrier()
         if p_rank == 0:
             receive(size)

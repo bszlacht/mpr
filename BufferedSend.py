@@ -24,9 +24,15 @@ def send(size):
         # buffer = np.empty(buf_size, dtype='b')
         # MPI.Attach_buffer(buffer)
 
-        sendBuf = np.empty(size, dtype=np.uint8)
-        comm.Bsend(sendBuf, dest=0, tag=123)
-        comm.Irecv(sendBuf, source=0, tag=123)
+        # sendBuf = np.empty(size, dtype=np.uint8)
+        # comm.Bsend(sendBuf, dest=0, tag=123)
+        # comm.Irecv(sendBuf, source=0, tag=123)
+
+        msg = bytearray(size)
+        comm.Bsend([msg, MPI.CHAR], dest=0, tag=123)
+        msg = comm.Irecv(buffer, source=1, tag=123)
+        msg.Wait()
+
     end_time = (MPI.Wtime() - start_time)/N
     return end_time
 
@@ -38,10 +44,12 @@ def receive(size):
         # buffer = np.empty(buf_size, dtype=np.uint8)
         # MPI.Attach_buffer(buffer)
 
-        recvBuf = np.empty(size, dtype=np.uint8)
-        comm.Irecv(recvBuf, source=1, tag=123)
-        comm.Bsend(recvBuf, dest=1, tag=123)
+        # recvBuf = np.empty(size, dtype=np.uint8)
+        # comm.Irecv(recvBuf, source=1, tag=123)
+        # comm.Bsend(recvBuf, dest=1, tag=123)
 
+        msg = comm.Irecv(buffer, source=1, tag=123)
+        comm.Bsend([msg, MPI.CHAR], dest=0, tag=123)
 
 def test(p_rank):
     global maxSize
