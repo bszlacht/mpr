@@ -43,7 +43,7 @@ def test(p_rank):
             mbsize = size / (10 ** 6)
             v = mbsize / time
             print('size = %d | time = %f' % (size, time))
-            print('{:.15f},{}'.format(v, size))
+            print(v, size)
 
 
 test(rank)
