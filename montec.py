@@ -4,7 +4,9 @@ from mpi4py import MPI
 
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
-
+# todo startuj generator z roznego poczatkowego ziarna
+# todo pokazac dokladnosc
+# todo pokazac ze ze wzrostem ilosci punktow wzrasta dokladnosc pi
 def generate_points(n):
     inCount = 0
     for i in range(0, n):

@@ -47,6 +47,8 @@ def test(p_rank):
             receive(size)
         else:
             time = send(size)
+            print('size = %d | time = %f' % (size, time))
+
             mbsize = size / (10 ** 6)
             print(str(mbsize / time) + "," + str(size))
 
