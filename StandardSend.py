@@ -41,9 +41,9 @@ def test(p_rank):
         else:
             time = send(size)
             mbsize = size / (10 ** 6)
-            bw = mbsize / time
+            v = mbsize / time
             print('size = %d | time = %f' % (size, time))
-            print(str(bw) + "," + str(size))
+            print(str(v) + "," + str(size))
 
 
 test(rank)
