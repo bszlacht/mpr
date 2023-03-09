@@ -49,7 +49,7 @@ def test(p_rank):
             time = send(size)
             mbsize = size / (10 ** 6)
             v = mbsize / time
-            print('size = %d | time = %f' % (size, time))
+            print('v = %f | size = %d | mbsize = %f | time = %f' % (v, size, mbsize, time))
             print(v, size)
 
         MPI.Detach_buffer()

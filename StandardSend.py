@@ -34,7 +34,7 @@ def receive(size):
 
 
 def test(p_rank):
-    for size in range(0, 1000000, 10000):
+    for size in range(0, 1100000, 10000):
         comm.Barrier()
         if p_rank == 0:
             receive(size)
@@ -42,7 +42,7 @@ def test(p_rank):
             time = send(size)
             mbsize = size / (10 ** 6)
             v = mbsize / time
-            print('size = %d | time = %f' % (size, time))
+            print('v = %f | size = %d | mbsize = %f | time = %f' % (v, size, mbsize, time))
             print(v, size)
 
 
