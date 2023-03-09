@@ -9,7 +9,7 @@ rank = comm.Get_rank()
 
 maxSize = 1000000
 
-N = 10000
+N = 1000
 
 size_array = [1, 10, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 10000, 12000, 16000, 22000, 40000, 60000, 1000000]
 
@@ -50,7 +50,7 @@ def test(p_rank):
             mbsize = size / (10 ** 6)
             v = mbsize / time
             print('size = %d | time = %f' % (size, time))
-            print('{:.12f},{}'.format(v, size))
+            print('{:.15f},{}'.format(v, size))
 
         MPI.Detach_buffer()
         del buffer
