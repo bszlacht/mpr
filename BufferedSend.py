@@ -35,11 +35,9 @@ def receive(size):
         comm.Bsend(recvBuf, dest=1, tag=123)
 
 
-
-
 def test(p_rank):
     global maxSize
-    for size in size_array:
+    for size in range(0, 1000000, 10000):
         comm.Barrier()
 
         buffer = np.empty(maxSize * 4, dtype='b')
@@ -49,10 +47,11 @@ def test(p_rank):
             receive(size)
         else:
             time = send(size)
-            mbsize = size / (10 ^ 6)
+            mbsize = size / (10 ** 6)
             print(str(mbsize / time) + "," + str(size))
 
         MPI.Detach_buffer()
         del buffer
+
 
 test(rank)
