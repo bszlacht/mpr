@@ -1,7 +1,6 @@
 from mpi4py import MPI
 import numpy as np
-import csv
-
+import math
 # Initialize MPI
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
@@ -40,7 +39,7 @@ def test(p_rank):
             receive(size)
         else:
             time = send(size)
-            mbsize = size / (10 ** 6)
+            mbsize = size / math.pow(10,6)
             v = mbsize / time
             print('v = %f | size = %d | mbsize = %f | time = %f' % (v, size, mbsize, time))
             print(v, size)
