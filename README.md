@@ -9,7 +9,7 @@ Każda komunikacja została powtórzona N = 1000 razy. Czas został pomieżony j
 ![alt_text](https://github.com/bszlacht/mpr/blob/main/plots/ss21.png)<br />
 **Porównanie różnych metod komunikacji w tych samych środowiskach:**<br />
 ```diff
-- Kolor niebieski: Standard Send
+@@ Kolor niebieski: Standard Send @@
 - Kolor czerwony: Buffered Send
 ```
 ![alt_text](https://github.com/bszlacht/mpr/blob/main/plots/comparisononenode.png)<br />
