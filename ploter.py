@@ -5,7 +5,7 @@ columns = ["bandwidth", "bsize"]
 
 df = pd.read_csv("std_one_node", usecols=columns)
 plt.plot(df.bsize, df.bandwidth)
-plt.xlabel('size in B')
+plt.xlabel('siz e in B')
 plt.ylabel('bandwidth in MB/s')
 plt.title('Standard Send 1:2')
 
