@@ -30,5 +30,6 @@ def monte_carlo():
         pi_estimate = 4 * inCountAll / n
         print("Estimated value of pi:", pi_estimate)
 
-
+start_time = MPI.Wtime()
 monte_carlo()
+end_time = (MPI.Wtime() - start_time)
