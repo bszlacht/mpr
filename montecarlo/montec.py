@@ -14,8 +14,7 @@ n = 10000000
 # Sp = T1/Tn  speed up
 # E = Sp/n  wydajnosc czyli jak dobrze nam poszlo w porownaniu do oryginalnego speed upu?? (bardzo blisko 1) (jak jest powyzej 1 to niepokoj)
 # Sf = (1/Sp - 1/n) / (1 - 1/n) => metryka karpafrata?
-# Wykresy maja być nieciagle bo nie ma np. pol procesora WYRAZNE PUNKTY + PRZEWYRANA LINIA!!!
-
+# wykresy maja byc nieciagle bo nie ma np pol procesora wyrazny punkty + przerwana linia
 
 def generate_points(n_local):
     inCount = 0
