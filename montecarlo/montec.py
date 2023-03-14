@@ -10,13 +10,11 @@ n = 10000000
 
 # todo pokazac dokladnosc
 # todo pokazac ze ze wzrostem ilosci punktow wzrasta dokladnosc pi
-
-
-# T => szybkość algorytmu
-# Sp = T1/Tn => speed up
-# E = Sp/n => wydajność czyli jak dobrze nam poszlo w porownaniu do oryginalnego speed upu?? (bardzo blisko 1) (jak jest powyzej 1 to niepokoj)
+# T  szybkosc algorytmu
+# Sp = T1/Tn  speed up
+# E = Sp/n  wydajnosc czyli jak dobrze nam poszlo w porownaniu do oryginalnego speed upu?? (bardzo blisko 1) (jak jest powyzej 1 to niepokoj)
 # Sf = (1/Sp - 1/n) / (1 - 1/n) => metryka karpafrata?
-# Wykresy mają być nieciągłe bo nie ma np. pół procesora WYRAZNE PUNKTY + PRZEWYRANA LINIA!!!
+# Wykresy maja być nieciagle bo nie ma np. pol procesora WYRAZNE PUNKTY + PRZEWYRANA LINIA!!!
 
 
 def generate_points(n_local):
