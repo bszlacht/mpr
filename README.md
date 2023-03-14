@@ -16,4 +16,3 @@ Każda komunikacja została powtórzona N = 1000 razy. Czas został pomieżony j
 ![alt_text](https://github.com/bszlacht/mpr/blob/main/plots/twonodescomparison.png)<br />
 
 
-
