@@ -1,7 +1,7 @@
 
 # Sprawozdanie LAB1
 ## Jak zostały przeprowadzone badania? <br />
-Każda komunikacja została powtórzona N = 1000 razy. Czas został pomieżony jako czas wszystkich N pomiarów podzielony przez N. <br />
+Każda komunikacja została powtórzona N = 1000 razy. Czas został pomieżony jako czas wszystkich N pomiarów podzielony przez N. <br /> <br />
 **Wykresy poszczególnych wyników:**
 Poniżej wykresy dla komunikacji buferowanej. Pozwala ona wysyłającemu procesowi na przechowywanie wiadomości w jego pamięci przed wysłaniem jej. Pozwala to na pracowanie w tym samym momencie kiedy wiadomość jest wysyłana. W ten sam sposób proces odbierający może odebrać wiadomość kiedy będzie miał czas. Minusem tego sposobu komunikacji jest dodatkowy narzut pamięci jaki musimy zurzyć na alokację buferów.<br />
 ![alt_text](https://github.com/bszlacht/mpr/blob/main/plots/bs12.png)<br />
