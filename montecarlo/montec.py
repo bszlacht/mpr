@@ -29,9 +29,7 @@ def generate_points(n_local):
 
 def monte_carlo():
     inCount = generate_points(n // size)
-    print(inCount)
     inCountAll = comm.reduce(inCount, op=MPI.SUM, root=0)
-    print(inCountAll)
     comm.Barrier()
     if rank == 0:
         pi_estimate = 4 * inCountAll / n
