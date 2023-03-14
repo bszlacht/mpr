@@ -5,7 +5,7 @@ from mpi4py import MPI
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
-n = 10000
+n = 10000000
 
 
 # todo pokazac dokladnosc
