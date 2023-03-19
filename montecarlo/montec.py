@@ -1,20 +1,20 @@
 import random
 import math
 from mpi4py import MPI
+import sys
+import numpy as np
 
+# mpi4py global variables
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
-n = 10000000
 
+# number of points to generate
+n = np.longlong(sys.argv[1])
+points_for_this_proces = n // size
+# variable that will hold reduced data
+global_data = np.zeros(1, dtype=np.longlong)
 
-# todo pokazac dokladnosc
-# todo pokazac ze ze wzrostem ilosci punktow wzrasta dokladnosc pi
-# T  szybkosc algorytmu
-# Sp = T1/Tn  speed up
-# E = Sp/n  wydajnosc czyli jak dobrze nam poszlo w porownaniu do oryginalnego speed upu?? (bardzo blisko 1) (jak jest powyzej 1 to niepokoj)
-# Sf = (1/Sp - 1/n) / (1 - 1/n) => metryka karpafrata?
-# wykresy maja byc nieciagle bo nie ma np pol procesora wyrazny punkty + przerwana linia
 
 def generate_points(n_local):
     inCount = 0
@@ -27,15 +27,22 @@ def generate_points(n_local):
     return inCount
 
 
-def monte_carlo():
-    inCount = generate_points(n // size)
-    inCountAll = comm.reduce(inCount, op=MPI.SUM, root=0)
+if rank == 0:
+    all_points_in = np.zeros_like(global_data)
     comm.Barrier()
-    if rank == 0:
-        pi_estimate = 4 * inCountAll / n
-        print("Estimated value of pi:", pi_estimate)
 
+    start_time = MPI.Wtime()
 
-start_time = MPI.Wtime()
-monte_carlo()
-end_time = (MPI.Wtime() - start_time)
+    points_in = generate_points(points_for_this_proces)
+    global_data[0] = points_in
+    comm.Reduce([global_data, MPI.LONG_LONG], [all_points_in, MPI.LONG_LONG], op=MPI.SUM, root=0)
+    pi = 4 * all_points_in / n
+
+    end_time = (MPI.Wtime() - start_time)
+    print(end_time)
+    print(pi)
+else:
+    comm.Barrier()
+    points_in = generate_points(points_for_this_proces)
+    global_data[0] = points_in
+    comm.Reduce([global_data, MPI.LONG_LONG], None, op=MPI.SUM, root=0)
