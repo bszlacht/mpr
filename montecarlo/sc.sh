@@ -6,4 +6,4 @@
 #SBATCH --account=plgmpr23-cpu
 
 module add scipy-bundle/2021.10-foss-2021b
-mpiexec -np 12 ./montec.py 1000
+mpiexec -np 12 ./test.py 1000
