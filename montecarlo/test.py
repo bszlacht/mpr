@@ -8,24 +8,6 @@ import socket
 import numpy as np
 
 
-# random.seed(int(time.time()))
-
-def calculate_pi(number_of_points):
-    list_points = generate_points(number_of_points)
-    in_p = check_points(list_points)
-    pi = 4 * (float(in_p) / float(number_of_points))
-    return pi
-
-
-def generate_points(number_of_points):
-    res = []
-    # change
-    for i in range(number_of_points):
-        point = (random.random(), random.random())
-        res.append(point)
-    return res
-
-
 def check_points(number_of_points):
     points_in_circle = 0
     for i in range(number_of_points):
@@ -63,7 +45,5 @@ if comm.rank == 0:
 else:
     comm.Barrier()
     points_in = check_points(points_to_gen)
-    # print(points_in)
     data[0] = points_in
-    # print(data)
     comm.Reduce([data, MPI.LONG_LONG], None, op=MPI.SUM, root=0)
