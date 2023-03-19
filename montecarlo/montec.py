@@ -21,12 +21,13 @@ def generate_points(n_local):
     random.seed(rank)
     for i in range(n_local):
         x, y = random.random(), random.random()
-        d = math.sqrt(pow(x, 2) + pow(y, 2))
+        d = x * x + y * y
         if d < 1:
             inCount += 1
     return inCount
 
 
+print("ASDASDADASDAS")
 if rank == 0:
     all_points_in = np.zeros_like(global_data)
     comm.Barrier()
