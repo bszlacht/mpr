@@ -3,7 +3,6 @@
 from mpi4py import MPI
 import random
 import sys
-import time
 import socket
 import numpy as np
 

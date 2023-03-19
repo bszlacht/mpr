@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import random
 from mpi4py import MPI
 import sys
