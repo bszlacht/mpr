@@ -1,0 +1,8 @@
+[szlachta@dc1a-lab-vnode-01 mpr]$ mpiexec -machinefile ./onenode -np 2 python ./StandardSend.py
+(0.1197414639716798, 1)
+[szlachta@dc1a-lab-vnode-01 mpr]$ mpiexec -machinefile ./twonodes -np 2 python ./StandardSend.py
+(0.008171778041448212, 1)
+[szlachta@dc1a-lab-vnode-01 mpr]$ mpiexec -machinefile ./twonodes -np 2 python ./BufferedSend.py
+(0.006422658058825691, 1)
+[szlachta@dc1a-lab-vnode-01 mpr]$ mpiexec -machinefile ./onenode -np 2 python ./BufferedSend.py
+(0.06692255161630022, 1)
