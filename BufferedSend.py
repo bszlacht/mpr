@@ -37,25 +37,32 @@ def receive(size):
         comm.Bsend(recvBuf, dest=1, tag=123)
 
 
-def test(p_rank):
+def test(maxSizeLocal, p_rank, size):
+    comm.Barrier()
+    buffer = np.empty(maxSizeLocal * 4, dtype='b')
+    MPI.Attach_buffer(buffer)
+    if p_rank == 0:
+        receive(size)
+    else:
+        time = send(size)
+        mbsize = size / math.pow(10, 6)
+        v = mbsize / time
+        # print('v = %f | size = %d | mbsize = %f | time = %f' % (v, size, mbsize, time))
+        print(v, size)
+    MPI.Detach_buffer()
+    del buffer
+
+
+def test_capacity(p_rank):
     global maxSize
     for size in range(0, 1000000, 10000):
-        comm.Barrier()
-
-        buffer = np.empty(maxSize * 4, dtype='b')
-        MPI.Attach_buffer(buffer)
-
-        if p_rank == 0:
-            receive(size)
-        else:
-            time = send(size)
-            mbsize = size / math.pow(10,6)
-            v = mbsize / time
-            # print('v = %f | size = %d | mbsize = %f | time = %f' % (v, size, mbsize, time))
-            print(v, size)
-
-        MPI.Detach_buffer()
-        del buffer
+        test(maxSize, p_rank, size)
 
 
-test(rank)
+def test_delay(p_rank):
+    global maxSize
+    size = 1
+    test(maxSize, p_rank, size)
+
+
+test_delay(rank)
