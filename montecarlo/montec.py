@@ -1,5 +1,4 @@
 import random
-import math
 from mpi4py import MPI
 import sys
 import numpy as np
@@ -18,7 +17,7 @@ global_data = np.zeros(1, dtype=np.longlong)
 
 def generate_points(n_local):
     inCount = 0
-    random.seed(rank)
+    # random.seed(rank)
     for i in range(n_local):
         x, y = random.random(), random.random()
         d = x * x + y * y
