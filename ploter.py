@@ -26,11 +26,20 @@ columns = ["bandwidth", "bsize"]
 
 df = pd.read_csv("std_two_nodes", usecols=columns)
 df1 = pd.read_csv("buf_two_nodes", usecols=columns)
-plt.plot(df1.bsize, df1.bandwidth, color='r', label='buf_two_nodes')
-plt.plot(df.bsize, df.bandwidth, color='b', label='std_one_nodes')
-plt.xlabel('siz e in B')
+plt.scatter(df1.bsize, df1.bandwidth, color='r', label='buf_two_nodes')
+plt.scatter(df.bsize, df.bandwidth, color='b', label='std_two_nodes')
+plt.xlabel('size in B')
 plt.ylabel('bandwidth in MB/s')
 plt.title('Two nodes methods comparison')
+plt.show()
+
+df = pd.read_csv("std_one_node", usecols=columns)
+df1 = pd.read_csv("buf_one_node", usecols=columns)
+plt.scatter(df1.bsize, df1.bandwidth, color='r', label='buf_one_node')
+plt.scatter(df.bsize, df.bandwidth, color='b', label='std_one_node')
+plt.xlabel('size in B')
+plt.ylabel('bandwidth in MB/s')
+plt.title('One node methods comparison')
 
 plt.show()
 
