@@ -61,9 +61,16 @@ columns = ["n", "time"]
 # plt.legend()
 # plt.show()
 
-df = pd.read_csv("montecarlo/results/skalowanieslabevc", usecols=columns)
+# df = pd.read_csv("montecarlo/results/skalowanieslabevc", usecols=columns)
+# plt.scatter(df.n, df.time)
+# plt.xlabel('number of processors')
+# plt.ylabel('time [s]')
+# plt.title('Time plot on vCluster')
+# plt.show()
+
+df = pd.read_csv("montecarlo/results/skalowaniesilnevc", usecols=columns)
 plt.scatter(df.n, df.time)
 plt.xlabel('number of processors')
 plt.ylabel('time [s]')
-plt.title('Time plot on vCluster')
+plt.title('Strong scaling time plot on vCluster')
 plt.show()
