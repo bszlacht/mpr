@@ -7,6 +7,6 @@
 
 module add scipy-bundle/2021.10-foss-2021b
 chmod +x ./montec.py
-mpiexec -np 12 ./montec.py 1000000000
-mpiexec -np 12 ./montec.py 1000000000
-mpiexec -np 12 ./montec.py 1000000000
+mpiexec -np 12 ./montec.py 10000000000
+mpiexec -np 12 ./montec.py 10000000000
+mpiexec -np 12 ./montec.py 10000000000
