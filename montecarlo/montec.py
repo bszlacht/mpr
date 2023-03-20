@@ -40,8 +40,8 @@ if rank == 0:
     points_in = generate_points(points_for_this_proces)
     global_data[0] = points_in
     comm.Reduce([global_data, MPI.LONG_LONG], [all_points_in, MPI.LONG_LONG], op=MPI.SUM, root=0)
-    pi = 4 * all_points_in / (n * size)
-    # pi = 4 * all_points_in / n
+    pi = 4 * all_points_in / (n * size)  # weak
+    # pi = 4 * all_points_in / n # strog
     end_time = (MPI.Wtime() - start_time)
     print(end_time)
     print(pi)
