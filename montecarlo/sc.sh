@@ -8,7 +8,7 @@
 module add scipy-bundle/2021.10-foss-2021b
 chmod +x ./montec.py
 # shellcheck disable=SC2034
-for SIZE in 10000000000 10000000 500
+for SIZE in 5000000000 10000000 500
 do
     for THREADS in 12 11 10 9 8 7 6 5 4 3 2 1
     do
