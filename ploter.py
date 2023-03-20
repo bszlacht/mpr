@@ -62,17 +62,74 @@ columns = ["n", "time"]
 # plt.show()
 
 # df = pd.read_csv("montecarlo/results/skalowanieslabevc", usecols=columns)
+# sp_1 = df.time[0]
 # plt.scatter(df.n, df.time)
 # plt.xlabel('number of processors')
 # plt.ylabel('time [s]')
 # plt.title('Weak scaling time plot on vCluster')
-# plt.ylim([0, 0.1])
 # plt.show()
 
-df = pd.read_csv("montecarlo/results/skalowaniesilnevc", usecols=columns)
+df = pd.read_csv("montecarlo/resultsares/strongscaling/big", usecols=columns)
+sp_1 = df.time[0]
 plt.scatter(df.n, df.time)
 plt.xlabel('number of processors')
-plt.ylabel('time [s]')
+plt.ylabel('time[s]')
 plt.title('Strong scaling time plot on vCluster')
-plt.ylim([0, 0.1])
+plt.show()
+
+# df = pd.read_csv("montecarlo/results/skalowanieslabevc", usecols=columns)
+# sp_1 = df.time[0]
+# plt.scatter(df.n, df.n*sp_1/df.time)
+# plt.xlabel('number of processors')
+# plt.ylabel('speedup')
+# plt.title('Weak scaling speedup plot on vCluster')
+# plt.show()
+
+df = pd.read_csv("montecarlo/resultsares/strongscaling/big", usecols=columns)
+sp_1 = df.time[0]
+print(sp_1)
+print(df.time)
+plt.scatter(df.n, sp_1/df.time)
+plt.xlabel('number of processors')
+plt.ylabel('speedup')
+plt.title('Strong scaling speedup plot on vCluster')
+plt.show()
+
+# df = pd.read_csv("montecarlo/results/skalowanieslabevc", usecols=columns)
+# sp_1 = df.time[0]
+# plt.scatter(df.n, sp_1/df.time)
+# plt.xlabel('number of processors')
+# plt.ylabel('efficiency')
+# plt.title('Weak scaling efficiency plot on vCluster')
+# plt.ylim([0, 1.5])
+# plt.show()
+
+df = pd.read_csv("montecarlo/resultsares/strongscaling/big", usecols=columns)
+sp_1 = df.time[0]
+plt.scatter(df.n, sp_1/(df.n*df.time))
+plt.xlabel('number of processors')
+plt.ylabel('efficiency')
+plt.title('Strong scaling efficiency plot on vCluster')
+plt.ylim([0, 1.5])
+plt.show()
+
+# df = pd.read_csv("montecarlo/results/skalowanieslabevc", usecols=columns)
+# sp_1 = df.time[0]
+# sp = df.n*sp_1/df.time
+# plt.scatter(df.n, (1/sp - 1/df.n)/(1-1/df.n))
+# plt.xlabel('number of processors')
+# plt.ylabel('serial fraction')
+# plt.title('Weak scaling serial fraction plot on vCluster')
+# plt.ylim([0, 0.5])
+# plt.show()
+
+df = pd.read_csv("montecarlo/resultsares/strongscaling/big", usecols=columns)
+sp_1 = df.time[0]
+sp = sp_1/df.time
+plt.scatter(df.n, (1/sp - 1/df.n)/(1-1/df.n))
+plt.xlabel('number of processors')
+plt.ylabel('serial fraction')
+plt.title('Strong scaling serial fraction plot on vCluster')
+plt.ylim([-0.1, 0.1])
+plt.axhline(y=0, color='black', linestyle='-')
 plt.show()
