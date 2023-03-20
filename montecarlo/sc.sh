@@ -10,7 +10,7 @@ chmod +x ./montec.py
 # shellcheck disable=SC2034
 for SIZE in 5000000000 10000000 500
 do
-    for THREADS in 12 11 10 9 8 7 6 5 4 3 2 1
+    for THREADS in 1 2 3 4 5 6 7 8 9 10 11 12
     do
       mpiexec -np $THREADS ./montec.py $SIZE
     done

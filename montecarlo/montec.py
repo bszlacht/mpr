@@ -31,7 +31,6 @@ def generate_points(n_local):
 
 
 if rank == 0:
-    print("COMM.SIZE = " + str(size) + " n = " + str(n))
     all_points_in = np.zeros_like(global_data)
     comm.Barrier()
 
@@ -43,7 +42,7 @@ if rank == 0:
     # pi = 4 * all_points_in / (n * size)
     pi = 4 * all_points_in / n
     end_time = (MPI.Wtime() - start_time)
-    print(end_time)
+    print(size, end_time)
     print(pi)
 else:
     comm.Barrier()
