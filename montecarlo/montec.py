@@ -13,6 +13,8 @@ size = comm.Get_size()
 # number of points to generate
 n = np.longlong(sys.argv[1])
 points_for_this_proces = n // size
+# points_for_this_proces = n
+
 # variable that will hold reduced data
 global_data = np.zeros(1, dtype=np.longlong)
 
@@ -28,7 +30,6 @@ def generate_points(n_local):
     return inCount
 
 
-print("ASDASDADASDAS")
 if rank == 0:
     all_points_in = np.zeros_like(global_data)
     comm.Barrier()
