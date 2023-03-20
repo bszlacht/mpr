@@ -2,7 +2,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
 
-columns = ["processors", "time [s]"]
+columns = ["n", "time"]
 
 # df = pd.read_csv("std_one_node", usecols=columns)
 # df1 = pd.read_csv("buf_one_node", usecols=columns)
@@ -61,8 +61,9 @@ columns = ["processors", "time [s]"]
 # plt.legend()
 # plt.show()
 
-df = pd.read_csv("results/skalowaniesilnevc", usecols=columns)
-plt.plot(df.bsize, df.bandwidth)
-plt.xlabel('size in B')
-plt.ylabel('bandwidth in MB/s')
-plt.title('Standard Send 2:1')
+df = pd.read_csv("montecarlo/results/skalowanieslabevc", usecols=columns)
+plt.scatter(df.n, df.time)
+plt.xlabel('number of processors')
+plt.ylabel('time [s]')
+plt.title('Time plot on vCluster')
+plt.show()
