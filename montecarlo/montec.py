@@ -41,7 +41,7 @@ if rank == 0:
     global_data[0] = points_in
     comm.Reduce([global_data, MPI.LONG_LONG], [all_points_in, MPI.LONG_LONG], op=MPI.SUM, root=0)
     pi = 4 * all_points_in / (n * size)
-
+    # pi = 4 * all_points_in / n
     end_time = (MPI.Wtime() - start_time)
     print(end_time)
     print(pi)
