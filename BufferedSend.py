@@ -2,18 +2,14 @@ import math
 
 from mpi4py import MPI
 import numpy as np
-import csv
 
 # Initialize MPI
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
-# size = comm.Get_size()
 
 maxSize = 1000000
 
 N = 1000
-
-size_array = [1, 10, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 10000, 12000, 16000, 22000, 40000, 60000, 1000000]
 
 
 def send(size):
@@ -47,7 +43,6 @@ def test(maxSizeLocal, p_rank, size):
         time = send(size)
         mbsize = size / math.pow(10, 6)
         v = mbsize / time
-        # print('v = %f | size = %d | mbsize = %f | time = %f' % (v, size, mbsize, time))
         print(v, size)
     MPI.Detach_buffer()
     del buffer
