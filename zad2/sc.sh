@@ -7,4 +7,4 @@ do
     do
       ./main ARR_SIZE THREADS
     done
-doneasd
+done
