@@ -1,6 +1,6 @@
-
 all:
 	g++ main.cpp -o main -std=c++11 -fopenmp
-	./main 5 10
+	touch results.csv
+	./sc.sh
 clean:
 	rm -f main

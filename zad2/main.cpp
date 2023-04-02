@@ -10,11 +10,13 @@ using namespace std;
 Wykresy:
   1. Przyspieszenie(rozmiar)
   2. CzasWykonania(rozmiar)
-Wykresy dla różnych: 
+Wykresy dla różnych:
   -> ustawien 'schedule' min. 5 różnych, parametr chunk
   -> wielkosci problemu = wielkosc zaalokowanej tablicy (trzeba dodac jaki to % max mozliwosci sprzetu)
   -> wnioski opisujaca klauzule 'schedule'
 
+32761316kB = 32761316000B
+więc 8190329000B to max jaki moze byc size
 */
 int main(int argc, char **argv)
 {
@@ -28,17 +30,24 @@ int main(int argc, char **argv)
 
 #pragma omp parallel default(none) shared(data, size)
   {
-    mt19937_64 rng(random_device{}());  // ???
-    uniform_int_distribution<int> distribution(1, 1000);  // ???
+    mt19937_64 rng(random_device{}());                   // ???
+    uniform_int_distribution<int> distribution(1, 1000); // ???
 #pragma omp for schedule(static)
     for (int I = 0; I < size; I++)
-      data[I] = distribution(rng);  // seed distribution and get random number
+      data[I] = distribution(rng);
   }
 
   // for (int I = 0; I < 100; I++)
   //   cout << data[I] << " ";
   // cout << "\n";
 
-  cout << "Time: " << omp_get_wtime() - start << "\n";
+  FILE *out_file = fopen("results.csvw", "mode");
+  if (out_file == NULL)
+  {
+    printf("error");
+    exit(-1);
+  }
+  double exec_time = omp_get_wtime() - start;
+  fprintf(out_file, "%d,%d\n",threads, exec_time);
   return 0;
 }
