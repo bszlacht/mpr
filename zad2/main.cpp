@@ -35,9 +35,9 @@ int main(int argc, char **argv)
       data[I] = distribution(rng);  // seed distribution and get random number
   }
 
-  for (int I = 0; I < 100; I++)
-    cout << data[I] << " ";
-  cout << "\n";
+  // for (int I = 0; I < 100; I++)
+  //   cout << data[I] << " ";
+  // cout << "\n";
 
   cout << "Time: " << omp_get_wtime() - start << "\n";
   return 0;
