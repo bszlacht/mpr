@@ -17,6 +17,8 @@ int main(int argc, char **argv)
 
   string size_string = argv[1];
   char *s_threads = argv[2];
+  cout << size_string << endl;
+  cout << s_threads << endl;
 
   unsigned long long int size = stoull(size_string);
   int threads = atoi(s_threads);
