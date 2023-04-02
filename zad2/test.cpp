@@ -1,8 +1,6 @@
 #include <iostream>
-#include <cstdlib>
 #include <random>
 #include <string>
-#include <omp.h>
 using namespace std;
 
 // g++ 1.cpp -o 1 -std=c++11 -fopenmp
@@ -25,29 +23,17 @@ int main(int argc, char **argv)
   int threads = atoi(argv[2]);                       // string to integer
   int *data = new int[size];                         // create table
 
-  omp_set_num_threads(threads);
-  double start = omp_get_wtime();
 
-#pragma omp parallel default(none) shared(data, size)
-  {
-    mt19937_64 rng(random_device{}());                   // ???
-    uniform_int_distribution<int> distribution(1, 1000); // ???
-#pragma omp for schedule(static)
-    for (int I = 0; I < size; I++)
-      data[I] = distribution(rng);
-  }
 
-  // for (int I = 0; I < 100; I++)
-  //   cout << data[I] << " ";
-  // cout << "\n";
 
-  FILE *out_file = fopen("results.csv", "mode");
+
+  FILE *out_file = fopen("results.csv", "w");
   if (out_file == NULL)
   {
     printf("error");
     exit(-1);
   }
-  double exec_time = omp_get_wtime() - start;
+  double exec_time = 123.2;
   fprintf(out_file, "%d,%f\n",threads, exec_time);
   return 0;
 }
