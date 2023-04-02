@@ -28,15 +28,12 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  for (int i = 0; i <= 3; i++)
-  {
-    cout << "Type of x is: " << typeid(argv[i]).name() << '\n';
-  }
+  string size_string = argv[1];
+  char *s_threads = argv[2];
 
-  string size_string(argv[1]);
-  unsigned long long int size = stoull(size_string); // string to unsigned long long
-  int threads = atoi(argv[2]);                       // string to integer
-  int *data = new int[size];                         // create table
+  unsigned long long int size = stoull(size_string);
+  int threads = atoi(s_threads);
+  int *data = new int[size];
 
   omp_set_num_threads(threads);
   double start = omp_get_wtime();
