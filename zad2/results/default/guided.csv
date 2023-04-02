@@ -1,4 +1,4 @@
-threads,size,time
+threads,arr_size,time
 1,400,0.000714
 2,400,0.000977
 3,400,0.001093

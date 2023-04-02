@@ -1,6 +1,6 @@
 # max = 32761316000B, for 1000000000 -> terminate called after throwing an instance of 'std::bad_alloc' what():  std::bad_alloc
 # shellcheck disable=SC2034
-for ARR_SIZE in 100 1000 10000 100000 1000000 10000000 100000000
+for ARR_SIZE in `seq 100 10000 100000000`
 do
     # shellcheck disable=SC2043
     for THREADS in 1 2 3 4
