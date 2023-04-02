@@ -9,8 +9,7 @@ do
     # shellcheck disable=SC2043
     for THREADS in 1 2 3 4
     do
-      #./main $ARR_SIZE $THREADS
-      sleep 0.5 # this is work
+      ./main $ARR_SIZE $THREADS
       count=$(( $count + 1 ))
       pd=$(( $count * 73 / $total ))
       printf "\r%3d.%1d%% %.${pd}s" $(( $count * 100 / $total )) $(( ($count * 1000 / $total) % 10 )) $pstr
