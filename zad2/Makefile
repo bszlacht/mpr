@@ -4,4 +4,4 @@ all:
 	./sc.sh
 clean:
 	rm -f main
-	rm -f sc.sh
+	rm -f results.csv
