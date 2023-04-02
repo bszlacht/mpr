@@ -31,8 +31,8 @@ int main(int argc, char **argv)
     uniform_int_distribution<int> distribution(1, 1000);
 //#pragma omp for schedule(static)
 //#pragma omp for schedule(dynamic)
-#pragma omp for schedule(guided)
-//#pragma omp for schedule(runtime)
+//#pragma omp for schedule(guided)
+#pragma omp for schedule(runtime)
 //#pragma omp for schedule(auto)
 
     for (int I = 0; I < size; I++)
