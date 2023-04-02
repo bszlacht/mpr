@@ -41,7 +41,7 @@ int main(int argc, char **argv)
   //   cout << data[I] << " ";
   // cout << "\n";
 
-  FILE *out_file = fopen("results.csv", "w");
+  FILE *out_file = fopen("results.csv", "a");
   if (out_file == NULL)
   {
     printf("error");
