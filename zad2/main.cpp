@@ -3,6 +3,8 @@
 #include <random>
 #include <string>
 #include <omp.h>
+#include <typeinfo>
+
 using namespace std;
 
 // g++ 1.cpp -o 1 -std=c++11 -fopenmp
@@ -30,7 +32,7 @@ int main(int argc, char **argv)
   {
     cout << "Type of x is: " << typeid(argv[i]).name() << '\n';
   }
-  
+
   string size_string(argv[1]);
   unsigned long long int size = stoull(size_string); // string to unsigned long long
   int threads = atoi(argv[2]);                       // string to integer
