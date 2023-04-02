@@ -20,6 +20,17 @@ więc 8190329000B to max jaki moze byc size
 */
 int main(int argc, char **argv)
 {
+  if (argc != 3)
+  {
+    printf("invalid number of arguments");
+    return 1;
+  }
+
+  for (int i = 0; i <= 3; i++)
+  {
+    cout << "Type of x is: " << typeid(argv[i]).name() << '\n';
+  }
+  
   string size_string(argv[1]);
   unsigned long long int size = stoull(size_string); // string to unsigned long long
   int threads = atoi(argv[2]);                       // string to integer
@@ -48,6 +59,6 @@ int main(int argc, char **argv)
     exit(-1);
   }
   double exec_time = omp_get_wtime() - start;
-  fprintf(out_file, "%d,%f\n",threads, exec_time);
+  fprintf(out_file, "%d,%f\n", threads, exec_time);
   return 0;
 }
