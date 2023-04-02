@@ -7,19 +7,6 @@
 
 using namespace std;
 
-// g++ 1.cpp -o 1 -std=c++11 -fopenmp
-/*
-Wykresy:
-  1. Przyspieszenie(rozmiar)
-  2. CzasWykonania(rozmiar)
-Wykresy dla różnych:
-  -> ustawien 'schedule' min. 5 różnych, parametr chunk
-  -> wielkosci problemu = wielkosc zaalokowanej tablicy (trzeba dodac jaki to % max mozliwosci sprzetu)
-  -> wnioski opisujaca klauzule 'schedule'
-
-32761316kB = 32761316000B
-więc 8190329000B to max jaki moze byc size
-*/
 int main(int argc, char **argv)
 {
   if (argc != 3)
