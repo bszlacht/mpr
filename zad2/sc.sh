@@ -1,7 +1,7 @@
 # max = 32761316000B, for 1000000000 -> terminate called after throwing an instance of 'std::bad_alloc' what():  std::bad_alloc
 # shellcheck disable=SC2034
 count=0
-total=100
+total=404
 pstr="[=======================================================================]"
 
 for ARR_SIZE in `seq 100 1000000 100000000`
