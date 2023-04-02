@@ -46,6 +46,6 @@ int main(int argc, char **argv)
     exit(-1);
   }
   double exec_time = omp_get_wtime() - start;
-  fprintf(out_file, "%d,%d,%f\n", threads, sizeof(int) * size, exec_time);
+  fprintf(out_file, "%d,%lld,%f\n", threads, sizeof(int) * size, exec_time);
   return 0;
 }
