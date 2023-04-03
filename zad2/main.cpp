@@ -32,8 +32,8 @@ int main(int argc, char **argv)
 //#pragma omp for schedule(static)
 //#pragma omp for schedule(dynamic)
 //#pragma omp for schedule(guided)
-#pragma omp for schedule(runtime)
-//#pragma omp for schedule(auto)
+//#pragma omp for schedule(runtime)
+#pragma omp for schedule(auto)
 
     for (int I = 0; I < size; I++)
       data[I] = distribution(rng);
