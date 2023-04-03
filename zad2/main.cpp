@@ -21,16 +21,18 @@ int main(int argc, char **argv)
   unsigned long long int size = stoull(size_string);
   int threads = atoi(s_threads);
   int *data = new int[size];
-  int divider = atoi(didiver_s);
-
+  double divider = atof(didiver_s);
+  
   omp_set_num_threads(threads);
   double start = omp_get_wtime();
   // int chunk_size = (int)(size / threads);
-  int chunk_size = (int)(size * (divider/100));
+  int chunk_size = (int)(size * (divider / 100.0));
+
 #pragma omp parallel default(none) shared(data, size, chunk_size)
   {
     mt19937_64 rng(random_device{}());
     uniform_int_distribution<int> distribution(1, 1000);
+
 #pragma omp for schedule(static, chunk_size)
     // #pragma omp for schedule(dynamic)
     // #pragma omp for schedule(guided)
