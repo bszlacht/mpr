@@ -22,7 +22,7 @@ int main(int argc, char **argv)
   int threads = atoi(s_threads);
   int *data = new int[size];
   double divider = atof(didiver_s);
-  
+
   omp_set_num_threads(threads);
   double start = omp_get_wtime();
   // int chunk_size = (int)(size / threads);
@@ -33,8 +33,8 @@ int main(int argc, char **argv)
     mt19937_64 rng(random_device{}());
     uniform_int_distribution<int> distribution(1, 1000);
 
-#pragma omp for schedule(static, chunk_size)
-    // #pragma omp for schedule(dynamic)
+    // #pragma omp for schedule(static, chunk_size)
+#pragma omp for schedule(dynamic, chunk_size)
     // #pragma omp for schedule(guided)
     // #pragma omp for schedule(runtime)
     // #pragma omp for schedule(auto)
@@ -49,6 +49,6 @@ int main(int argc, char **argv)
     exit(-1);
   }
   double exec_time = omp_get_wtime() - start;
-  fprintf(out_file, "%f,%f\n",divider, exec_time);
+  fprintf(out_file, "%f,%f\n", divider, exec_time);
   return 0;
 }
