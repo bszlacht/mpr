@@ -82,6 +82,9 @@ void bucket_sort(vector<int> &v, int number_of_buckets, int threads)
             }
         }
     }
+    for (int i = 0; i < t; i++) {
+        std::cout << "Bucket " << i << " size: " << buckets[i].size() << std::endl;
+    }
 }
 
 int main(int argc, char **argv)
