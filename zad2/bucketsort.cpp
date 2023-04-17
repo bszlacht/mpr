@@ -28,10 +28,10 @@ using namespace std;
         }
 */
 
-void bucket_sort(vector<int> &v, int number_of_buckets, int threads)
+void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
 {
     // ściągamy rozmiar tablicy i tworzymy kubełki
-    const int n = v.size();
+    const long long n = v.size();
     vector<vector<double>> buckets(number_of_buckets);
 #pragma omp parallel
     {
@@ -40,6 +40,7 @@ void bucket_sort(vector<int> &v, int number_of_buckets, int threads)
         int thread_count = omp_get_num_threads();
         // definiujemy zakresy kubełka
         int chunk_size = n / thread_count;
+        int bucket_range = n / number_of_buckets;
         int start = thread_id * chunk_size;
         int end = (thread_id == thread_count - 1) ? n : (thread_id + 1) * chunk_size;
 
@@ -49,8 +50,7 @@ void bucket_sort(vector<int> &v, int number_of_buckets, int threads)
         {
             if (v[i] >= start && v[i] < end)
             {
-                int bucket_index = v[i] / chunk_size;
-
+                long long bucket_index = (number_of_buckets * v[i]) / n;
                 buckets[bucket_index].push_back(v[i]);
             }
             i++;
@@ -82,7 +82,8 @@ void bucket_sort(vector<int> &v, int number_of_buckets, int threads)
             }
         }
     }
-    for (int i = 0; i < number_of_buckets; i++) {
+    for (int i = 0; i < number_of_buckets; i++)
+    {
         std::cout << "Bucket " << i << " size: " << buckets[i].size() << std::endl;
     }
 }
