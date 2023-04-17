@@ -46,10 +46,6 @@ void bucket_sort(vector<int> &v, int t)
         int i = start;
         do
         {
-            if (thread_id == 0)
-            {
-                cout << i << endl;
-            }
             int bucket_index = thread_count * v[i] / 1000;
 
             if (bucket_index == thread_id)
@@ -120,9 +116,9 @@ int main(int argc, char **argv)
     double exec_time = omp_get_wtime() - start;
 
     bucket_sort(data, threads);
-    // for (int i = 0; i < size; i++)
-    // {
-    //     cout << data[i] << endl;
-    // }
+    for (int i = 0; i < size; i++)
+    {
+        cout << data[i] << endl;
+    }
     return 0;
 }
