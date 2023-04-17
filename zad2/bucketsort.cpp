@@ -47,9 +47,9 @@ void bucket_sort(vector<int> &v, int t)
         do
         {
 
-            if(thread_id == 3) {
-                cout << i << endl;
-            }
+            // if(thread_id == 3) {
+            //     cout << i << endl;
+            // }
             int bucket_index = thread_count * v[i] / 1000;
 
             if (bucket_index == thread_id)
@@ -71,12 +71,12 @@ void bucket_sort(vector<int> &v, int t)
         // }
 
         // Sortujemy elementy w każdym kubełku
-
-#pragma omp for
-        for (int i = 0; i < thread_count; i++)
-        {
-            std::sort(buckets[i].begin(), buckets[i].end());
-        }
+        std::sort(buckets[thread_id].begin(), buckets[thread_id].end());
+// #pragma omp for
+//         for (int i = 0; i < thread_count; i++)
+//         {
+//             std::sort(buckets[i].begin(), buckets[i].end());
+//         }
 
         // Łączymy elementy z kubełków w jedną posortowaną tablicę
         i = 0;
@@ -125,9 +125,9 @@ int main(int argc, char **argv)
     double exec_time = omp_get_wtime() - start;
 
     bucket_sort(data, threads);
-    // for (int i = 0; i < size; i++)
-    // {
-    //     cout << data[i] << endl;
-    // }
+    for (int i = 0; i < size; i++)
+    {
+        cout << data[i] << endl;
+    }
     return 0;
 }
