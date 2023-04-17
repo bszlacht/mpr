@@ -67,9 +67,9 @@ void bucket_sort(vector<int> &v)
 
         // Sortujemy elementy w każdym kubełku
         #pragma omp for
-        for (auto &bucket : buckets)
+        for (int i = 0; i < 4; i++)
         {
-            sort(bucket.begin(), bucket.end());
+            std::sort(buckets[i].begin(), buckets[i].end());
         }
 
         // Łączymy elementy z kubełków w jedną posortowaną tablicę
