@@ -72,20 +72,23 @@ void bucket_sort(vector<int> &v, int t)
 
         // Sortujemy elementy w każdym kubełku
         std::sort(buckets[thread_id].begin(), buckets[thread_id].end());
-// #pragma omp for
-//         for (int i = 0; i < thread_count; i++)
-//         {
-//             std::sort(buckets[i].begin(), buckets[i].end());
-//         }
+        // #pragma omp for
+        //         for (int i = 0; i < thread_count; i++)
+        //         {
+        //             std::sort(buckets[i].begin(), buckets[i].end());
+        //         }
 
-        // Łączymy elementy z kubełków w jedną posortowaną tablicę
-        i = 0;
-        for (auto &bucket : buckets)
+// Łączymy elementy z kubełków w jedną posortowaną tablicę
+#pragma omp barrier
+        int start_idx = 0;
+        for (i = 0; i < thread_count; i++)
         {
-            for (auto &element : bucket)
-            {
-                v[i++] = element;
-            }
+            start_idx += buckets[i].size();
+        }
+
+        for (auto &element : buckets[start_idx])
+        {
+            v[start_idx++] = element;
         }
     }
     for (int i = 0; i < t; i++)
