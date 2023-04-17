@@ -47,7 +47,7 @@ void bucket_sort(vector<int> &v, int t)
         do
         {
 
-            if(thread_id == 1) {
+            if(thread_id == 2) {
                 cout << i << endl;
             }
             int bucket_index = thread_count * v[i] / 1000;
