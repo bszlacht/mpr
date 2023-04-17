@@ -4,6 +4,8 @@
         "new": "cpp",
         "array": "cpp",
         "string_view": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     }
 }
