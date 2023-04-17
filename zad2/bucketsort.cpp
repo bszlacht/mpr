@@ -28,10 +28,10 @@ using namespace std;
         }
 */
 
-void bucket_sort(vector<int> &v)
+void bucket_sort(vector<int> &v, int t)
 {
     const int n = v.size();
-    vector<double> buckets[4];
+    vector<double> buckets[t];
 
 #pragma omp parallel
     {
@@ -45,7 +45,7 @@ void bucket_sort(vector<int> &v)
         // Umieszczamy elementy we właściwych kubełkach
         int i = start + 1;
         while (start != i) {
-            int bucket_index = 4 * v[i] / 1000;
+            int bucket_index = thread_count * v[i] / 1000;
 
             if (bucket_index == thread_id)
             {
@@ -67,7 +67,7 @@ void bucket_sort(vector<int> &v)
 
         // Sortujemy elementy w każdym kubełku
         #pragma omp for
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < thread_count; i++)
         {
             std::sort(buckets[i].begin(), buckets[i].end());
         }
@@ -113,8 +113,8 @@ int main(int argc, char **argv)
     }
 
     double exec_time = omp_get_wtime() - start;
-
-    bucket_sort(data);
+    
+    bucket_sort(data, threads);
     for (int i = 0; i < size; i++)
     {
         cout << data[i] << endl;
