@@ -1,3 +1,6 @@
 # shellcheck disable=SC2034
 
-./bucketsort 1000 4
+for num_of_buckets in {100..100100..100}
+do 
+./bucketsort 100000 1 $num_of_buckets
+done

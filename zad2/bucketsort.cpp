@@ -28,109 +28,107 @@ using namespace std;
         }
 */
 
-void bucket_sort(vector<int> &v, int t)
+void bucket_sort(vector<int> &v, int number_of_buckets, int threads)
 {
+    // ściągamy rozmiar tablicy i tworzymy kubełki
     const int n = v.size();
-    vector<double> buckets[t];
-
+    vector<vector<double>> buckets(number_of_buckets);
 #pragma omp parallel
     {
-
+        // id i ilość wątków
         int thread_id = omp_get_thread_num();
         int thread_count = omp_get_num_threads();
-
+        // definiujemy zakresy kubełka
         int chunk_size = n / thread_count;
         int start = thread_id * chunk_size;
+        int end = (thread_id == thread_count - 1) ? n : (thread_id + 1) * chunk_size;
 
         // Umieszczamy elementy we właściwych kubełkach
         int i = start;
         do
         {
-
-            // if(thread_id == 3) {
-            //     cout << i << endl;
-            // }
-            int bucket_index = thread_count * v[i] / 1000;
-
-            if (bucket_index == thread_id)
+            if (v[i] >= start && v[i] < end)
             {
+                int bucket_index = v[i] / chunk_size;
+
                 buckets[bucket_index].push_back(v[i]);
             }
             i++;
             i = i % n;
         } while (start != i);
-        // for (int i = 0; i < n; i++)
-        // {
-        //     int bucket_index = 4 * v[i] / 1000;
-
-        //     if (bucket_index == thread_id)
-        //     {
-        //         buckets[bucket_index].push_back(v[i]);
-        //     }
-
-        // }
-
-        // Sortujemy elementy w każdym kubełku
-        std::sort(buckets[thread_id].begin(), buckets[thread_id].end());
-        // #pragma omp for
-        //         for (int i = 0; i < thread_count; i++)
-        //         {
-        //             std::sort(buckets[i].begin(), buckets[i].end());
-        //         }
-
-// Łączymy elementy z kubełków w jedną posortowaną tablicę
 #pragma omp barrier
+        // Sortujemy elementy w każdym kubełku
+
+#pragma omp for schedule(static)
+        for (i = 0; i < number_of_buckets; i++)
+        {
+            sort(buckets[i].begin(), buckets[i].end());
+        }
+
+        // Łączymy elementy z kubełków w jedną posortowaną tablicę
         int start_idx = 0;
-        for (i = 0; i < thread_count; i++)
+        int bucket_idx = (number_of_buckets / thread_count) * thread_id;
+        int range_of_buckets = (number_of_buckets / thread_count);
+        for (i = 0; i < bucket_idx; i++)
         {
             start_idx += buckets[i].size();
         }
 
-        for (auto &element : buckets[start_idx])
+        for (i = bucket_idx; i < bucket_idx + range_of_buckets; i++)
         {
-            v[start_idx++] = element;
+            for (auto &elem : buckets[i])
+            {
+                v[start_idx++] = elem;
+            }
         }
-    }
-    for (int i = 0; i < t; i++)
-    {
-        std::cout << "Bucket " << i << " size: " << buckets[i].size() << std::endl;
     }
 }
 
 int main(int argc, char **argv)
 {
-    if (argc != 3)
+
+    if (argc != 4)
     {
         printf("invalid number of arguments");
         return 1;
     }
-    string size_string = argv[1];
-    char *s_threads = argv[2];
-    unsigned long long int size = stoull(size_string);
-    int threads = atoi(s_threads);
-    vector<int> data = vector<int>(size);
+    //  Pobranie parametrów programu
+    unsigned long long int arr_size = stoull(argv[1]);
+    int threads = atoi(argv[2]);
+    int number_of_buckets = atoi(argv[3]);
+
+    // Stworzenie tablicy do posortowania
+    vector<int> data = vector<int>(arr_size);
+
+    // Ustalenie ilości działających wątków
     omp_set_num_threads(threads);
-    double start = omp_get_wtime();
 
-    // int chunk_size = (int)(size * (divider / 100.0));
-
-    int chunk_size = size / threads;
-#pragma omp parallel default(none) shared(data, size, chunk_size)
+    // Wielkokść chunka tj. jaką porcję w forze dostanie każdy wątek
+    int chunk_size = arr_size / threads;
+    double start_time, end_time;
+    // Generator seedujemy osobno dla każdego wątku
+    start_time = omp_get_wtime();
+#pragma omp parallel default(none) shared(data, arr_size, chunk_size)
     {
-        mt19937_64 rng(random_device{}()); // todo czy to jest uniform distribution???
-        uniform_int_distribution<int> distribution(1, 1000);
+        mt19937_64 rng(random_device{}());
+        uniform_int_distribution<int> distribution(1, arr_size - 1);
 
+        // Losowanie liczb do tablicy
 #pragma omp for schedule(static, chunk_size)
-        for (int I = 0; I < size; I++)
+        for (int I = 0; I < arr_size; I++)
             data[I] = distribution(rng);
     }
 
-    double exec_time = omp_get_wtime() - start;
-
-    bucket_sort(data, threads);
-    for (int i = 0; i < size; i++)
-    {
-        cout << data[i] << endl;
-    }
+    // Wywołanie współbieżnego sortowania
+    bucket_sort(data, number_of_buckets, threads);
+    end_time = omp_get_wtime();
+    // Wypisanie tablicy
+    // for (int i = 0; i < arr_size; i++)
+    // {
+    //     cout << data[i] << endl;
+    // }
+    // Koniec programu
+    double elapsed_time = end_time - start_time;
+    cout << elapsed_time << "," << number_of_buckets << endl;
     return 0;
 }
