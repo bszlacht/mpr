@@ -82,7 +82,7 @@ void bucket_sort(vector<int> &v, int number_of_buckets, int threads)
             }
         }
     }
-    for (int i = 0; i < t; i++) {
+    for (int i = 0; i < number_of_buckets; i++) {
         std::cout << "Bucket " << i << " size: " << buckets[i].size() << std::endl;
     }
 }
