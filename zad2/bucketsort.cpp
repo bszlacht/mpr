@@ -44,7 +44,7 @@ void bucket_sort(vector<int> &v, int t)
 
         // Umieszczamy elementy we właściwych kubełkach
         int i = start + 1;
-        while (start != i)
+        do
         {
             if (thread_id == 0)
             {
@@ -58,7 +58,7 @@ void bucket_sort(vector<int> &v, int t)
             }
             i++;
             i = i % n;
-        }
+        } while (start != i);
 // for (int i = 0; i < n; i++)
 // {
 //     int bucket_index = 4 * v[i] / 1000;
@@ -72,7 +72,7 @@ void bucket_sort(vector<int> &v, int t)
 
 // Sortujemy elementy w każdym kubełku
 #pragma omp for
-        for (int i = 0; i < thread_count; i++)
+            for (int i = 0; i < thread_count; i++)
         {
             std::sort(buckets[i].begin(), buckets[i].end());
         }
