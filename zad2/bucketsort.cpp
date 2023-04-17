@@ -43,7 +43,7 @@ void bucket_sort(vector<int> &v, int t)
         int start = thread_id * chunk_size;
 
         // Umieszczamy elementy we właściwych kubełkach
-        int i = start + 1;
+        int i = start;
         do
         {
             if (thread_id == 0)
