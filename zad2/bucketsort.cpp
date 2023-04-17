@@ -41,7 +41,6 @@ void bucket_sort(vector<int> &v)
 
         int chunk_size = n / thread_count;
         int start = thread_id * chunk_size;
-        int end = (thread_id == thread_count - 1) ? n : (thread_id + 1) * chunk_size;
 
         // Umieszczamy elementy we właściwych kubełkach
         int i = start + 1;
@@ -74,7 +73,7 @@ void bucket_sort(vector<int> &v)
         }
 
         // Łączymy elementy z kubełków w jedną posortowaną tablicę
-        int i = 0;
+        i = 0;
         for (auto &bucket : buckets)
         {
             for (auto &element : bucket)
@@ -87,25 +86,22 @@ void bucket_sort(vector<int> &v)
 
 int main(int argc, char **argv)
 {
-    if (argc != 4)
+    if (argc != 3)
     {
         printf("invalid number of arguments");
         return 1;
     }
-
     string size_string = argv[1];
     char *s_threads = argv[2];
-    char *didiver_s = argv[3];
     unsigned long long int size = stoull(size_string);
     int threads = atoi(s_threads);
     vector<int> data = vector<int>(size);
-    double divider = atof(didiver_s);
-
     omp_set_num_threads(threads);
     double start = omp_get_wtime();
 
-    int chunk_size = (int)(size * (divider / 100.0));
+    // int chunk_size = (int)(size * (divider / 100.0));
 
+    int chunk_size = size / threads;
 #pragma omp parallel default(none) shared(data, size, chunk_size)
     {
         mt19937_64 rng(random_device{}()); // todo czy to jest uniform distribution???
