@@ -117,7 +117,7 @@ int main(int argc, char **argv)
     start = omp_get_wtime();
     bucket_sort(data, number_of_buckets, threads);
     end = omp_get_wtime();
-    cout << end - start << ","<< number_of_buckets << endl;
+    cout << end - start << ","<< threads << endl;
     // Wypisanie tablicy
     // for (int i = 0; i < arr_size; i++)
     // {
