@@ -154,6 +154,6 @@ int main(int argc, char **argv)
     // }
     // Koniec programu
     whole_time = end_time - start_time;
-    cout << threads << "" << whole_time << "," << data_generating_time << "," << bucket_sorting_time << "," << writing_sorted_data_time << "," << whole_time << endl;
+    cout << threads << "," << whole_time << "," << data_generating_time << "," << bucket_sorting_time << "," << writing_sorted_data_time << "," << data_into_bucket_time << endl;
     return 0;
 }
