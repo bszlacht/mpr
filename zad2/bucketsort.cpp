@@ -8,34 +8,13 @@
 
 using namespace std;
 
-/*
-
-        ! wrzucanie elementów do kubełków
-        todo sekwencyjny problem zbadac, jak wplywac wielkosc kubelkow na czas problemu, znalezc optimum i uzyc w rownoleglym
-        todo wazne, im wiecej kubelkow to mniejsza szansa ze watek sie zatrzyma na locku (wariant 2 algorytmu)
-        todo w 3 wariancie kubelki mniejsze
-        int thread_id = omp_get_thread_num();
-        int thread_count = omp_get_num_threads();
-
-        int start_index = (size / thread_count) * thread_id;
-        int end_index = (thread_id == thread_count - 1) ? size : (size / thread_count) * (thread_id + 1);
-
-        int num_buckets = 1000;
-        for (int i = start_index; i < end_index; i++)
-        {
-            int bucket_index = arr[i] / (size / num_buckets);
-            bucket_sizes[bucket_index]++;
-        }
-*/
-
 void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
 {
     // ściągamy rozmiar tablicy i tworzymy kubełki
     const long long n = v.size();
     vector<vector<long long>> buckets(number_of_buckets);
-
-    // double start, end;
-    // start = omp_get_wtime();
+    double start, end;
+    start = omp_get_wtime();
 #pragma omp parallel
     {
         // id i ilość wątków
@@ -68,13 +47,11 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 buckets[bucket_index].push_back(v[i]);
             }
         }
-// end = omp_get_wtime();
-// cout << end - start << "," << threads << endl;
-
-// #pragma omp parallel
-//     {
-// int thread_id = omp_get_thread_num();
-// long long thread_count = omp_get_num_threads();
+    }
+    end = omp_get_wtime();
+    cout << end - start << "," << threads << endl;
+#pragma omp parallel
+    {
 #pragma omp barrier
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
@@ -142,10 +119,10 @@ int main(int argc, char **argv)
     bucket_sort(data, number_of_buckets, threads);
 
     // Wypisanie tablicy
-    for (int i = 0; i < arr_size; i++)
-    {
-        cout << data[i] << endl;
-    }
+    // for (int i = 0; i < arr_size; i++)
+    // {
+    //     cout << data[i] << endl;
+    // }
     // Koniec programu
     return 0;
 }
