@@ -82,13 +82,14 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             sort(buckets[i].begin(), buckets[i].end());
         }
 
+        int last_bucket = 0;
+        int prev_buckets_sizes = 0;
         // Łączymy elementy z kubełków w jedną posortowaną tablicę
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
         {
-            int prev_buckets_sizes = 0;
 
-            for (int j = 0; j < i; j++)
+            for (int j = last_bucket; j < i; j++)
             {
                 prev_buckets_sizes += buckets[j].size();
             }
