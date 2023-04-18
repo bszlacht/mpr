@@ -62,14 +62,14 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             i = i % n;
         } while (start != i);
 
-        // end = omp_get_wtime();
-        // cout << end - start << "," << threads << endl;
+// end = omp_get_wtime();
+// cout << end - start << "," << threads << endl;
 
-        // #pragma omp parallel
-        //     {
-        // int thread_id = omp_get_thread_num();
-        // long long thread_count = omp_get_num_threads();
-
+// #pragma omp parallel
+//     {
+// int thread_id = omp_get_thread_num();
+// long long thread_count = omp_get_num_threads();
+#pragma omp barrier
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
         {
