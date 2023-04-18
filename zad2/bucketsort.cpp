@@ -111,9 +111,11 @@ int main(int argc, char **argv)
 
     bucket_sort(data, number_of_buckets, threads);
     // Wypisanie tablicy
-    for (int i = 0; i < arr_size; i++)
+    for (int i = 0; i < arr_size - 1; i++)
     {
-        cout << data[i] << endl;
+        if(data[i+1] <= data[i]) {
+            cout <<"ERROR" <<endl;
+        }
     }
     // Koniec programu
     return 0;
