@@ -133,10 +133,10 @@ int main(int argc, char **argv)
     bucket_sort(data, number_of_buckets, threads);
 
     // Wypisanie tablicy
-    // for (int i = 0; i < arr_size; i++)
-    // {
-    //     cout << data[i] << endl;
-    // }
+    for (int i = 0; i < arr_size; i++)
+    {
+        cout << data[i] << endl;
+    }
     // Koniec programu
     return 0;
 }
