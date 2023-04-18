@@ -106,19 +106,15 @@ int main(int argc, char **argv)
         for (int I = 0; I < arr_size; I++)
             data[I] = distribution(rng);
     }
-    double start, end;
 
     // Wywołanie współbieżnego sortowania
-    start = omp_get_wtime();
 
     bucket_sort(data, number_of_buckets, threads);
-    end = omp_get_wtime();
-    cout << end - start << "," << threads << endl;
     // Wypisanie tablicy
-    // for (int i = 0; i < arr_size; i++)
-    // {
-    //     cout << data[i] << endl;
-    // }
+    for (int i = 0; i < arr_size; i++)
+    {
+        cout << data[i] << endl;
+    }
     // Koniec programu
     return 0;
 }
