@@ -13,7 +13,6 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
     // ściągamy rozmiar tablicy i tworzymy kubełki
     const long long n = v.size();
     vector<vector<long long>> buckets(number_of_buckets);
-    double start, end;
 #pragma omp parallel
     {
         // id i ilość wątków
@@ -53,11 +52,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         {
             sort(buckets[i].begin(), buckets[i].end());
         }
-    }
 
-    start = omp_get_wtime();
-#pragma omp parallel
-    {
         int last_bucket = 0;
         int prev_buckets_sizes = 0;
 #pragma omp for schedule(static)
@@ -77,8 +72,6 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             }
         }
     }
-    end = omp_get_wtime();
-    cout << end - start << "," << threads << endl;
 }
 
 int main(int argc, char **argv)
@@ -113,11 +106,14 @@ int main(int argc, char **argv)
         for (int I = 0; I < arr_size; I++)
             data[I] = distribution(rng);
     }
+    double start, end;
 
     // Wywołanie współbieżnego sortowania
+    start = omp_get_wtime();
 
     bucket_sort(data, number_of_buckets, threads);
-
+    end = omp_get_wtime();
+    cout << end - start << "," << threads << endl;
     // Wypisanie tablicy
     // for (int i = 0; i < arr_size; i++)
     // {
