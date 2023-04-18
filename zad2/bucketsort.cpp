@@ -6,6 +6,11 @@
 #include <typeinfo>
 #include <algorithm>
 
+double data_generating_time = 0;
+double data_into_bucket_time = 0;
+double bucket_sorting_time = 0;
+double writing_sorted_data_time = 0;
+double whole_time = 0;
 using namespace std;
 
 /*
@@ -33,6 +38,8 @@ void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
     // ściągamy rozmiar tablicy i tworzymy kubełki
     const long long n = v.size();
     vector<vector<double>> buckets(number_of_buckets);
+    double start_time, end_time;
+    start_time = omp_get_wtime();
 #pragma omp parallel
     {
         // id i ilość wątków
@@ -56,25 +63,39 @@ void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
             i++;
             i = i % n;
         } while (start != i);
-#pragma omp barrier
-        // Sortujemy elementy w każdym kubełku
-
+        end_time = omp_get_wtime();
+    }
+    data_into_bucket_time = end_time - start_time;
+    // Sortujemy elementy w każdym kubełku
+    start_time = omp_get_wtime();
+#pragma omp parallel
+    {
+        int thread_id = omp_get_thread_num();
+        int thread_count = omp_get_num_threads();
 #pragma omp for schedule(static)
-        for (i = 0; i < number_of_buckets; i++)
+        for (int i = 0; i < number_of_buckets; i++)
         {
             sort(buckets[i].begin(), buckets[i].end());
         }
+    }
+    end_time = omp_get_wtime();
+    bucket_sorting_time = end_time = start_time;
 
+    start_time = omp_get_wtime();
+#pragma omp parallel
+    {
         // Łączymy elementy z kubełków w jedną posortowaną tablicę
+        int thread_id = omp_get_thread_num();
+        int thread_count = omp_get_num_threads();
         int start_idx = 0;
         int bucket_idx = (number_of_buckets / thread_count) * thread_id;
         int range_of_buckets = (number_of_buckets / thread_count);
-        for (i = 0; i < bucket_idx; i++)
+        for (int i = 0; i < bucket_idx; i++)
         {
             start_idx += buckets[i].size();
         }
 
-        for (i = bucket_idx; i < bucket_idx + range_of_buckets; i++)
+        for (int i = bucket_idx; i < bucket_idx + range_of_buckets; i++)
         {
             for (auto &elem : buckets[i])
             {
@@ -82,10 +103,8 @@ void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
             }
         }
     }
-    // for (int i = 0; i < number_of_buckets; i++)
-    // {
-    //     std::cout << "Bucket " << i << " size: " << buckets[i].size() << std::endl;
-    // }
+    end_time = omp_get_wtime();
+    writing_sorted_data_time = end_time - start_time;
 }
 
 int main(int argc, char **argv)
@@ -122,6 +141,8 @@ int main(int argc, char **argv)
         for (int I = 0; I < arr_size; I++)
             data[I] = distribution(rng);
     }
+    end_time = omp_get_wtime();
+    data_generating_time = end_time - start_time;
 
     // Wywołanie współbieżnego sortowania
     bucket_sort(data, number_of_buckets, threads);
@@ -132,7 +153,7 @@ int main(int argc, char **argv)
     //     cout << data[i] << endl;
     // }
     // Koniec programu
-    double elapsed_time = end_time - start_time;
-    cout << elapsed_time << "," << number_of_buckets << endl;
+    whole_time = end_time - start_time;
+    cout << threads << "" << whole_time << "," << data_generating_time << "," << bucket_sorting_time << "," << writing_sorted_data_time << "," << whole_time << endl;
     return 0;
 }
