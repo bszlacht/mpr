@@ -32,7 +32,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
 {
     // ściągamy rozmiar tablicy i tworzymy kubełki
     const long long n = v.size();
-    vector<vector<double>> buckets(number_of_buckets);
+    vector<vector<long long>> buckets(number_of_buckets);
 
     // double start, end;
     // start = omp_get_wtime();
