@@ -28,7 +28,7 @@ using namespace std;
         }
 */
 
-void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
+void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
 {
     // ściągamy rozmiar tablicy i tworzymy kubełki
     const long long n = v.size();
@@ -39,7 +39,8 @@ void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
         int thread_id = omp_get_thread_num();
         long long thread_count = omp_get_num_threads();
         // definiujemy zakresy kubełka
-        long long  chunk_size = n / thread_count;
+        long long chunk_size = n / thread_count;
+
         int bucket_range = n / number_of_buckets;
         int start = thread_id * chunk_size;
         int end = (thread_id == thread_count - 1) ? n : (thread_id + 1) * chunk_size;
@@ -51,6 +52,7 @@ void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
             if (v[i] >= start && v[i] < end)
             {
                 long long bucket_index = (number_of_buckets * v[i]) / n;
+                // cout << bucket_index << endl;
                 buckets[bucket_index].push_back(v[i]);
             }
             i++;
@@ -94,7 +96,7 @@ int main(int argc, char **argv)
     int number_of_buckets = atoi(argv[3]);
 
     // Stworzenie tablicy do posortowania
-    vector<int> data = vector<int>(arr_size);
+    vector<long long> data = vector<long long>(arr_size);
 
     // Ustalenie ilości działających wątków
     omp_set_num_threads(threads);
@@ -104,7 +106,7 @@ int main(int argc, char **argv)
 #pragma omp parallel default(none) shared(data, arr_size)
     {
         mt19937_64 rng(random_device{}());
-        uniform_int_distribution<int> distribution(1, arr_size - 1);
+        uniform_int_distribution<long long> distribution(1, arr_size - 1);
 
         // Losowanie liczb do tablicy
 #pragma omp for schedule(static)
@@ -117,7 +119,7 @@ int main(int argc, char **argv)
     start = omp_get_wtime();
     bucket_sort(data, number_of_buckets, threads);
     end = omp_get_wtime();
-    cout << end - start << ","<< threads << endl;
+    cout << end - start << "," << threads << endl;
     // Wypisanie tablicy
     // for (int i = 0; i < arr_size; i++)
     // {
