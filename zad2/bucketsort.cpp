@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     // Wypisanie tablicy
     for (int i = 0; i < arr_size - 1; i++)
     {
-        if(data[i+1] <= data[i]) {
+        if(data[i+1] < data[i]) {
             cout <<"ERROR" <<endl;
         }
     }
