@@ -94,10 +94,11 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 prev_buckets_sizes += buckets[j].size();
             }
             last_bucket = i;
+            int e = prev_buckets_sizes;
             for (int k = 0; k < buckets[i].size(); k++)
             {
                 v[prev_buckets_sizes] = buckets[i][k];
-                prev_buckets_sizes++;
+                e++;
             }
         }
     }
