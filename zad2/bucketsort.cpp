@@ -42,24 +42,27 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         int thread_id = omp_get_thread_num();
         long long thread_count = omp_get_num_threads();
         // definiujemy zakresy kubełka
-        long long chunk_size = n / thread_count; // 33
+        long long thread_offset = n / thread_count; // 33
 
-        int start = thread_id * chunk_size; // 0 33 66
-        int end = (thread_id == thread_count - 1) ? n : (thread_id + 1) * chunk_size; // 33 66 100
+        long long bucket_lower = thread_id * (number_of_buckets / thread_count);
+        long long bucket_upper = (thread_id + 1) * (number_of_buckets / thread_count);
+
+        if (thread_id == thread_count - 1) bucket_upper = number_of_buckets;
+
         // Umieszczamy elementy we właściwych kubełkach
-        int i = start;
-        do
-        {
-            long long bucket_index = (number_of_buckets * v[i]) / n;
 
-            if (v[i] >= start && v[i] < end)
-            {
-                // cout << thread_id << " wpisal do -> " << bucket_index << "\n";
-                buckets[bucket_index].push_back(v[i]);
-            }
-            i++;
-            i = i % n;
-        } while (start != i);
+        for (long long i = thread_offset; i < n; ++i) {
+          long long bucket_index = (number_of_buckets * v[i]) / n;
+          if (bucket_index >= bucket_lower && bucket_index < bucket_upper) {
+            buckets[bucket_index].push_back(v[i]);
+          }
+        }
+        for (long long i = 0; i < thread_offset; ++i) {
+          long long bucket_index = (number_of_buckets * v[i]) / n;
+          if (bucket_index >= bucket_lower && bucket_index < bucket_upper) {
+            buckets[bucket_index].push_back(v[i]);
+          }
+        }
 // end = omp_get_wtime();
 // cout << end - start << "," << threads << endl;
 
@@ -109,6 +112,7 @@ int main(int argc, char **argv)
     vector<long long> data = vector<long long>(arr_size);
 
     // Ustalenie ilości działających wątków
+    omp_set_dynamic(0);
     omp_set_num_threads(threads);
 
     // Wielkokść chunka tj. jaką porcję w forze dostanie każdy wątek
