@@ -14,7 +14,6 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
     const long long n = v.size();
     vector<vector<long long>> buckets(number_of_buckets);
     double start, end;
-    start = omp_get_wtime();
 #pragma omp parallel
     {
         // id i ilość wątków
@@ -47,22 +46,27 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 buckets[bucket_index].push_back(v[i]);
             }
         }
-#pragma omp barrier
     }
-    end = omp_get_wtime();
-    cout << end - start << "," << threads << endl;
+
+    start = omp_get_wtime();
+
 #pragma omp parallel
     {
-#pragma omp barrier
+// #pragma omp barrier
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
         {
             sort(buckets[i].begin(), buckets[i].end());
         }
 
+        // Łączymy elementy z kubełków w jedną posortowaną tablicę
+    }
+    end = omp_get_wtime();
+    cout << end-start << "," << threads <<endl;
+#pragma omp parallel 
+    {
         int last_bucket = 0;
         int prev_buckets_sizes = 0;
-        // Łączymy elementy z kubełków w jedną posortowaną tablicę
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
         {
