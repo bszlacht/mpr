@@ -56,6 +56,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             {
                 long long bucket_index = (number_of_buckets * v[i]) / n;
                 // cout << bucket_index << endl;
+                cout << thread_id << " | " << bucket_index;
                 buckets[bucket_index].push_back(v[i]);
             }
             i++;
