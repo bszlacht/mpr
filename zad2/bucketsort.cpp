@@ -47,21 +47,26 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         long long bucket_lower = thread_id * (number_of_buckets / thread_count);
         long long bucket_upper = (thread_id + 1) * (number_of_buckets / thread_count);
 
-        if (thread_id == thread_count - 1) bucket_upper = number_of_buckets;
+        if (thread_id == thread_count - 1)
+            bucket_upper = number_of_buckets;
 
         // Umieszczamy elementy we właściwych kubełkach
 
-        for (long long i = thread_offset; i < n; ++i) {
-          long long bucket_index = (number_of_buckets * v[i]) / n;
-          if (bucket_index >= bucket_lower && bucket_index < bucket_upper) {
-            buckets[bucket_index].push_back(v[i]);
-          }
+        for (long long i = thread_offset; i < n; ++i)
+        {
+            long long bucket_index = (number_of_buckets * v[i]) / n;
+            if (bucket_index >= bucket_lower && bucket_index < bucket_upper)
+            {
+                buckets[bucket_index].push_back(v[i]);
+            }
         }
-        for (long long i = 0; i < thread_offset; ++i) {
-          long long bucket_index = (number_of_buckets * v[i]) / n;
-          if (bucket_index >= bucket_lower && bucket_index < bucket_upper) {
-            buckets[bucket_index].push_back(v[i]);
-          }
+        for (long long i = 0; i < thread_offset; ++i)
+        {
+            long long bucket_index = (number_of_buckets * v[i]) / n;
+            if (bucket_index >= bucket_lower && bucket_index < bucket_upper)
+            {
+                buckets[bucket_index].push_back(v[i]);
+            }
         }
 // end = omp_get_wtime();
 // cout << end - start << "," << threads << endl;
@@ -76,20 +81,21 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         {
             sort(buckets[i].begin(), buckets[i].end());
         }
-        // Łączymy elementy z kubełków w jedną posortowaną tablicę
-        int start_idx = 0;
-        int bucket_idx = (number_of_buckets / thread_count) * thread_id;
-        int range_of_buckets = (number_of_buckets / thread_count);
-        for (int i = 0; i < bucket_idx; i++)
-        {
-            start_idx += buckets[i].size();
-        }
 
-        for (int i = bucket_idx; i < bucket_idx + range_of_buckets; i++)
+        // Łączymy elementy z kubełków w jedną posortowaną tablicę
+#pragma omp for schedule(static)
+        for (int i = 0; i < number_of_buckets; i++)
         {
-            for (auto &elem : buckets[i])
+            int prev_buckets_sizes = 0;
+
+            for (int j = 0; j < i; j++)
             {
-                v[start_idx++] = elem;
+                prev_buckets_sizes += buckets[j].size();
+            }
+            for (int k = 0; k < buckets[i].size(); k++)
+            {
+                v[prev_buckets_sizes] = buckets[i][k];
+                prev_buckets_sizes++;
             }
         }
     }
