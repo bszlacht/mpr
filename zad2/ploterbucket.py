@@ -11,3 +11,13 @@ plt.ylabel('time[s]')
 plt.title('Time plot based on number of buckets')
 plt.legend()
 plt.show()
+
+columns = ["time","threads"]
+
+df = pd.read_csv("results/spraw2/wholetime.csv", usecols=columns)
+plt.scatter(df.threads, df.time, color='r')
+plt.xlabel('number of threads')
+plt.ylabel('time[s]')
+plt.title('Time plot based on number of threads')
+plt.legend()
+plt.show()
