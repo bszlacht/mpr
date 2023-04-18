@@ -63,8 +63,8 @@ void bucket_sort(vector<int> &v, long long number_of_buckets, int threads)
             i++;
             i = i % n;
         } while (start != i);
-        end_time = omp_get_wtime();
     }
+    end_time = omp_get_wtime();
     data_into_bucket_time = end_time - start_time;
     // Sortujemy elementy w każdym kubełku
     start_time = omp_get_wtime();
