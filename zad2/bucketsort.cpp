@@ -54,7 +54,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
 
             if (v[i] >= start && v[i] < end)
             {
-                cout << thread_id << " wpisal do -> " << bucket_index << "\n";
+                // cout << thread_id << " wpisal do -> " << bucket_index << "\n";
                 buckets[bucket_index].push_back(v[i]);
             }
             i++;
