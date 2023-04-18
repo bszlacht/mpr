@@ -19,16 +19,14 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         int thread_id = omp_get_thread_num();
         long long thread_count = omp_get_num_threads();
         // definiujemy zakresy kubełka
-        long long thread_offset = n / thread_count; // 33
-
+        long long thread_offset = n / thread_count;
         long long bucket_lower = thread_id * (number_of_buckets / thread_count);
         long long bucket_upper = (thread_id + 1) * (number_of_buckets / thread_count);
 
         if (thread_id == thread_count - 1)
             bucket_upper = number_of_buckets;
 
-        // Umieszczamy elementy we właściwych kubełkach
-
+        // Umieszczamy elementy we właściwych kubełkach iterując przez całą tablicę zaczynają od innego elementu
         for (long long i = thread_offset; i < n; ++i)
         {
             long long bucket_index = (number_of_buckets * v[i]) / n;
@@ -45,7 +43,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 buckets[bucket_index].push_back(v[i]);
             }
         }
-
+        // bariera, ponieważ może być tak, że jakiś wątke skończy pracę szybciej a teraz będziemy sortować buckety więc nie chcemy żeby był wyścig
 #pragma omp barrier
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
@@ -53,12 +51,14 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             sort(buckets[i].begin(), buckets[i].end());
         }
 
+        // Wpisywanie posortowanych bucketów do tablicy
+        // Dla każdego wątku będzie różny start = i
+        // każdy policzy sobie prefix sum i na jego podstawie powpisuje odpowiednie buckety na odpowiednie miejsca
         int last_bucket = 0;
         int prev_buckets_sizes = 0;
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
         {
-
             for (int j = last_bucket; j < i; j++)
             {
                 prev_buckets_sizes += buckets[j].size();
@@ -82,6 +82,7 @@ int main(int argc, char **argv)
         printf("invalid number of arguments");
         return 1;
     }
+
     //  Pobranie parametrów programu
     unsigned long long int arr_size = stoull(argv[1]);
     int threads = atoi(argv[2]);
@@ -94,7 +95,6 @@ int main(int argc, char **argv)
     omp_set_dynamic(0);
     omp_set_num_threads(threads);
 
-    // Wielkokść chunka tj. jaką porcję w forze dostanie każdy wątek
     // Generator seedujemy osobno dla każdego wątku
 #pragma omp parallel default(none) shared(data, arr_size)
     {
@@ -108,9 +108,8 @@ int main(int argc, char **argv)
     }
 
     // Wywołanie współbieżnego sortowania
-
     bucket_sort(data, number_of_buckets, threads);
-    // Wypisanie tablicy
+    // Sprawdzanie czy posortowana
     for (int i = 0; i < arr_size - 1; i++)
     {
         if(data[i+1] < data[i]) {
