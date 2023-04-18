@@ -47,6 +47,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 buckets[bucket_index].push_back(v[i]);
             }
         }
+#pragma omp barrier
     }
     end = omp_get_wtime();
     cout << end - start << "," << threads << endl;
