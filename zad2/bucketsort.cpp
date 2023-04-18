@@ -42,17 +42,17 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         int thread_id = omp_get_thread_num();
         long long thread_count = omp_get_num_threads();
         // definiujemy zakresy kubełka
-        long long chunk_size = n / thread_count; // 0 333 / 333 666 / 666 1000
+        long long chunk_size = n / thread_count; // 33
 
-        int start = thread_id * chunk_size;
-        int end = (thread_id == thread_count - 1) ? n : (thread_id + 1) * chunk_size;
+        int start = thread_id * chunk_size; // 0 33 66
+        int end = (thread_id == thread_count - 1) ? n : (thread_id + 1) * chunk_size; // 33 66 100
         // Umieszczamy elementy we właściwych kubełkach
         int i = start;
         do
         {
             long long bucket_index = (number_of_buckets * v[i]) / n;
 
-            if (v[i] >= chunk_size * thread_id && v[i] < chunk_size * (thread_id + 1))
+            if (v[i] >= start && v[i] < end)
             {
                 cout << thread_id << " wpisal do -> " << bucket_index << "\n";
                 buckets[bucket_index].push_back(v[i]);
@@ -60,7 +60,6 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             i++;
             i = i % n;
         } while (start != i);
-        cout << "asdadssa" << endl;
 // end = omp_get_wtime();
 // cout << end - start << "," << threads << endl;
 
