@@ -8,16 +8,30 @@
 
 using namespace std;
 
+double times[4];
+
 void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
 {
     // ściągamy rozmiar tablicy i tworzymy kubełki
     const long long n = v.size();
     vector<vector<long long>> buckets(number_of_buckets);
+
+    double start_time_putting_in_buckets;
+    double start_time_sorting_elelements;
+    double start_time_writing;
+
 #pragma omp parallel
     {
         // id i ilość wątków
         int thread_id = omp_get_thread_num();
         long long thread_count = omp_get_num_threads();
+
+        // *** WRITING INTO BUCKETS ***
+        #pragma omp master
+        {
+            #pragma omp masterstart_time_putting_in_buckets = omp_get_wtime();
+        }
+
         // definiujemy zakresy kubełka
         long long thread_offset = n / thread_count;
         long long bucket_lower = thread_id * (number_of_buckets / thread_count);
@@ -43,14 +57,36 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 buckets[bucket_index].push_back(v[i]);
             }
         }
+
+        #pragma omp master
+        {
+            times[1] = omp_get_wtime() - start_time_putting_in_buckets;
+        }
+
         // bariera, ponieważ może być tak, że jakiś wątke skończy pracę szybciej a teraz będziemy sortować buckety więc nie chcemy żeby był wyścig
 #pragma omp barrier
+
+        // *** SORTING BUCKETS ***
+        #pragma omp master
+        {
+            start_time_sorting_elelements = omp_get_wtime();
+        }
 #pragma omp for schedule(static)
         for (int i = 0; i < number_of_buckets; i++)
         {
             sort(buckets[i].begin(), buckets[i].end());
         }
 
+        #pragma omp master
+        {
+            times[2] = omp_get_wtime() - start_time_sorting_elelements;
+        }
+
+        // *** WRITING INTO RESULT LIST ***
+        #pragma omp master
+        {
+            start_time_writing = omp_get_wtime();
+        }
         // Wpisywanie posortowanych bucketów do tablicy
         // Dla każdego wątku będzie różny start = i
         // każdy policzy sobie prefix sum i na jego podstawie powpisuje odpowiednie buckety na odpowiednie miejsca
@@ -70,6 +106,10 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 v[e] = buckets[i][k];
                 e++;
             }
+        }
+        #pragma omp master
+        {
+            times[3] = omp_get_wtime() - start_time_writing;
         }
     }
 }
@@ -108,13 +148,22 @@ int main(int argc, char **argv)
     }
 
     // Wywołanie współbieżnego sortowania
+    double start, end;
+    start = omp_get_wtime();
     bucket_sort(data, number_of_buckets, threads);
+    end = omp_get_wtime();
+    times[0] = end - start;
+
     // Sprawdzanie czy posortowana
     for (int i = 0; i < arr_size - 1; i++)
     {
-        if(data[i+1] < data[i]) {
-            cout <<"ERROR" <<endl;
+        if (data[i + 1] < data[i])
+        {
+            cout << "ERROR" << endl;
         }
+    }
+    for(int i = 0; i < 4; i++) {
+        cout << threads << "," << times[i] << endl;
     }
     // Koniec programu
     return 0;
