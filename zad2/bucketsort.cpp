@@ -26,10 +26,10 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         int thread_id = omp_get_thread_num();
         long long thread_count = omp_get_num_threads();
 
-        // *** WRITING INTO BUCKETS ***
-        #pragma omp master
+// *** WRITING INTO BUCKETS ***
+#pragma omp master
         {
-            #pragma omp masterstart_time_putting_in_buckets = omp_get_wtime();
+            start_time_putting_in_buckets = omp_get_wtime();
         }
 
         // definiujemy zakresy kubełka
@@ -58,7 +58,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             }
         }
 
-        #pragma omp master
+#pragma omp master
         {
             times[1] = omp_get_wtime() - start_time_putting_in_buckets;
         }
@@ -66,8 +66,8 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         // bariera, ponieważ może być tak, że jakiś wątke skończy pracę szybciej a teraz będziemy sortować buckety więc nie chcemy żeby był wyścig
 #pragma omp barrier
 
-        // *** SORTING BUCKETS ***
-        #pragma omp master
+// *** SORTING BUCKETS ***
+#pragma omp master
         {
             start_time_sorting_elelements = omp_get_wtime();
         }
@@ -77,13 +77,13 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
             sort(buckets[i].begin(), buckets[i].end());
         }
 
-        #pragma omp master
+#pragma omp master
         {
             times[2] = omp_get_wtime() - start_time_sorting_elelements;
         }
 
-        // *** WRITING INTO RESULT LIST ***
-        #pragma omp master
+// *** WRITING INTO RESULT LIST ***
+#pragma omp master
         {
             start_time_writing = omp_get_wtime();
         }
@@ -107,7 +107,7 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
                 e++;
             }
         }
-        #pragma omp master
+#pragma omp master
         {
             times[3] = omp_get_wtime() - start_time_writing;
         }
@@ -162,9 +162,9 @@ int main(int argc, char **argv)
             cout << "ERROR" << endl;
         }
     }
-    for(int i = 0; i < 4; i++) {
-        cout << threads << "," << times[i] << endl;
-    }
+    // for(int i = 0; i < 4; i++) {
+    cout << threads << "," << times[1] << endl;
+    // }
     // Koniec programu
     return 0;
 }
