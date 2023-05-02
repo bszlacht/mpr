@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     }
 
     for (int i = 0; i < arr_size; i++)
-            cout << i << "," << data[i] << endl;
+            cout << data[i] << endl;
     // Koniec programu
     return 0;
 }

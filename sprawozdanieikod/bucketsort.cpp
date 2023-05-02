@@ -64,7 +64,6 @@ void bucket_sort(vector<long long> &v, long long number_of_buckets, int threads)
         }
 
         // bariera, ponieważ może być tak, że jakiś wątke skończy pracę szybciej a teraz będziemy sortować buckety więc nie chcemy żeby był wyścig
-
 #pragma omp barrier
 
 // *** SORTING BUCKETS ***
